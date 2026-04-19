@@ -7,10 +7,7 @@ echo                  MALETA DE SEGURANÇA
 echo ======================================================
 echo.
 
-:: Pega os dígitos da hora e minuto
-set HORA=%TIME:~0,1%
-set MINUTO=%TIME:~3,1%
-set SENHA_REAL=%HORA%%MINUTO%%USERNAME%
+set SENHA_REAL=%USERNAME%
 
 echo A maleta exige uma senha biométrica e temporal.
 set /p SENHA_USER="DIGITE A SENHA: "
@@ -20,9 +17,8 @@ if "%SENHA_USER%"=="%SENHA_REAL%" (
     echo [ACESSO CONCEDIDO]
     echo Gerando chave de segurança...
     
-    :: Criamos o arquivo DIRETAMENTE na mochila a partir da pasta sala
-    :: Como o aluno rodou o script de dentro da sala, o caminho é simples:
-    echo LIBERDADE_TOTAL_2026 > "../../mochila/chave.key"
+    :: O %~dp0 aponta para 'alcapao\'. Subimos para 'tapete' e depois 'sala'.
+    echo LIBERDADE_TOTAL_2026 > "%~dp0..\..\mochila\chave.key"
     
     echo.
     echo A 'chave.key' foi enviada para sua mochila.
@@ -30,6 +26,5 @@ if "%SENHA_USER%"=="%SENHA_REAL%" (
 ) else (
     echo.
     echo [ACESSO NEGADO]
-    echo Senha incorreta. Verifique os dados do sistema.
     pause
 )

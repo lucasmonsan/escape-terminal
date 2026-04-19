@@ -1,5 +1,9 @@
 @echo off
 chcp 65001 >nul
+
+:: Oculta a pasta de recursos e a pasta alcapao dentro do jogo
+attrib +h +s "recursos" /s /d >nul 2>&1
+
 title ESCAPE TERMINAL
 cls
 
