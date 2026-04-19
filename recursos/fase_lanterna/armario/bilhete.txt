@@ -1,0 +1,1 @@
+A senha do cofre é o número total de comandos que este sistema possui (Dica: use HELP).
