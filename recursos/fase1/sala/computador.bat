@@ -1,10 +1,10 @@
 @echo off
 chcp 65001 >nul
-cls
 echo ======================================================
-echo                  TERMINAL DE ACESSO
+echo                   TERMINAL DE ACESSO
 echo ======================================================
 echo.
+timeout /t 1 >nul
 
 :: Verifica se o pendrive está na mochila dentro da sala
 if exist "mochila\pendrive.sys" (
@@ -16,19 +16,18 @@ if exist "mochila\pendrive.sys" (
     echo Carregando Kernel... [100%%]
     timeout /t 2 >nul
     
-    :: Copia a pasta do computador de recursos para sala
-    if exist "..\recursos\fase_computador\computador" (
-        xcopy "..\recursos\fase_computador\computador" ".\computador\" /e /i /y /h >nul
-        echo Sistema carregado com sucesso! Explore a pasta 'computador'.
-    )
+    :: Revela a pasta computador
+    attrib -h "computador" /s /d >nul 2>&1
+    echo Sistema carregado com sucesso! Explore a pasta 'computador'.
     
-    echo.
+    timeout /t 1 >nul
     echo Este terminal de instalação será removido.
     pause
     del "%~f0"
 ) else (
     echo [ERRO]: Disco de boot não encontrado.
-    echo Insira o pendrive do sistema na mochila e tente novamente.
+    timeout /t 1 >nul
+    echo Insira o pendrive na mochila e tente novamente.
     pause
 )
 exit /b
