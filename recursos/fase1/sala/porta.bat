@@ -19,7 +19,7 @@ if exist "mochila\chave.key" (
         timeout /t 1 >nul 
         
         :: 1. Entrega o Nível 2 (pegando da nova estrutura de recursos)
-        copy "..\recursos\fase2\nivel2.bat" ".." >nul
+        :: copy "..\recursos\fase2\nivel2.bat" ".." >nul
         
         :: 2. Restaura o Windows e limpa o ambiente
         start explorer.exe "%cd%\.." 
