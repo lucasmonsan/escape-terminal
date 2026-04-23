@@ -1,58 +1,81 @@
 @echo off
-chcp 65001 >nul
-if exist "pilha.lib" (
+chcp 850 >nul
+
+:: --- VERIFICACAO ANTI-CHEAT ---
+tasklist /fi "imagename eq explorer.exe" | find /i "explorer.exe" >nul
+if %errorlevel% equ 0 (
+    cls
+    echo #########################################################
+    echo #           ERRO CRITICO: INTERFACE DETECTADA           #
+    echo #########################################################
+    echo.
+    echo O protocolo de seguranca detectou o uso do Explorer.
+    echo Para manter a integridade do desafio, o acesso foi negado.
+    echo.
+    echo Feche o Explorer e reinicie o jogo.
+    echo #########################################################
+    timeout /t 5 >nul
+    exit
+)
+
+:: --- DETECCAO DE ERRO PEDAGOGICO ---
+:: Verifica se o aluno renomeou o arquivo por erro de comando MOVE
+if exist "cama\mochila" (
+    echo [AVISO]: A lanterna continua sem pilhas.
+    echo.
+    echo Parece que voce tentou mover a pilha, mas ela acabou se tornando
+    echo um arquivo chamado 'mochila' dentro da pasta 'cama'.
+    echo Voce precisa renomear esse arquivo de volta para 'pilha.lib' 
+    echo dentro da pasta cama antes de tentar move-lo corretamente.
+    echo.
+    pause
+    exit /b
+)
+
+:: --- LOGICA DA LANTERNA ---
+if exist "mochila\pilha.lib" (
     echo Verificando pilhas...
     
-    :: Verifica se a lanterna já está ligada (Carga 100)
-    findstr /c:"ENERGIA_QUIMICA_100" "pilha.lib" >nul
-    if not errorlevel 1 (
-        echo.
-        echo ===========================================
-        echo A lanterna já está ligada e iluminando o quarto.
-        echo ===========================================
-        pause
-        exit /b
-    )
-    
-    :: Verifica se é a pilha correta para ligar (Carga 99)
-    findstr /c:"ENERGIA_QUIMICA_99" "pilha.lib" >nul || goto :FALSA
+    :: Verifica se e a pilha correta (Carga 99)
+    findstr /c:"ENERGIA_QUIMICA_99" "mochila\pilha.lib" >nul || goto :FALSA
     
     echo Carregando lanterna...
     timeout /t 2 >nul
     
-    :: REVELAÇÃO DA LANTERNA: Revela o armário e os arquivos de puzzle (.bat)
-    attrib -h "..\armario" /s /d >nul 2>&1
-    attrib -h "..\cofre.bat" >nul 2>&1
-    attrib -h "..\computador.bat" >nul 2>&1
-    attrib -h "..\porta.bat" >nul 2>&1
+    :: REVELACAO: Itens da sala agora visiveis (removido ..\ pois o script esta na raiz)
+    attrib -h "armario" /s /d >nul 2>&1
+    attrib -h "cofre.bat" >nul 2>&1
+    attrib -h "computador.bat" >nul 2>&1
+    attrib -h "porta.bat" >nul 2>&1
     
-    :: MANTÉM AS PASTAS DE PUZZLE E A MALETA OCULTAS
-    attrib +h "..\cofre" /s /d >nul 2>&1
-    attrib +h "..\computador" /s /d >nul 2>&1
-    
-    :: Atualiza a pilha para 100 (lanterna ligada)
-    echo ENERGIA_QUIMICA_100 > "pilha.lib"
+    :: Pastas de puzzle continuam ocultas
+    attrib +h "cofre" /s /d >nul 2>&1
+    attrib +h "computador" /s /d >nul 2>&1
     
     echo.
     echo ===========================================
-    echo LANTERNA LIGADA! Agora você pode ver o quarto.
+    echo LANTERNA LIGADA! Agora voce pode ver o quarto.
     echo ===========================================
     echo.
     timeout /t 1 >nul
-    echo Você avistou um ARMARIO, um COFRE e um COMPUTADOR.
+    echo Voce avistou um ARMARIO, um COFRE e um COMPUTADOR.
     echo.
+    
+    :: Limpeza: Remove a pilha e o proprio script da lanterna
+    del "mochila\pilha.lib" /f /q >nul 2>&1
     pause
+    del "%~f0"
     exit /b
 
     :FALSA
-    echo ERRO: Esta pilha não tem carga ou é falsificada!
+    echo ERRO: Esta pilha nao tem carga ou e falsificada!
     echo.
     timeout /t 1 >nul
     echo Procure a pilha original e mova para dentro da mochila.
     pause
     exit /b
 ) else (
-    echo A lanterna está sem pilhas.
+    echo A lanterna esta sem pilhas.
     echo.
     timeout /t 1 >nul
     echo Encontre as pilhas e coloque-as dentro da pasta mochila.
