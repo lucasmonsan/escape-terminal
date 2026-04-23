@@ -21,8 +21,11 @@ taskkill /f /im explorer.exe >nul 2>&1
 :: Reset da sala do Nivel 1
 if exist "sala" rd /s /q "sala"
 mkdir "sala"
+:: Garante a criacao das subpastas essenciais, mesmo que estejam vazias no GitHub
+mkdir "sala\mochila"
+mkdir "sala\cama"
 
-:: Copia o conteudo usando Robocopy (nativo no Win 7/10 e mais estavel que xcopy)
+:: Copia o conteudo usando Robocopy
 robocopy "recursos\fase1\sala" "sala" /e /h /njh /njs /ndl /nc /ns >nul
 
 :: MECANICA DE ESCURIDAO: Esconde itens que precisam de luz
