@@ -6,13 +6,15 @@ tasklist /fi "imagename eq explorer.exe" | find /i "explorer.exe" >nul
 if %errorlevel% equ 0 (
     cls
     echo #########################################################
-    echo #           ERRO CRITICO: INTERFACE DETECTADA           #
+    echo #           GAME OVER: INTERFACE DETECTADA              #
     echo #########################################################
     echo.
-    echo O protocolo de seguranca detectou o uso do Explorer.
-    echo Para manter a integridade do desafio, o acesso foi negado.
+    echo O jogo foi feito para usar o CMD
+    echo e você está usando a pasta visual.
     echo.
-    echo Feche o Explorer e reinicie o jogo.
+    echo Seu acesso foi negado.
+    echo.
+    echo Reinicie o jogo.
     echo #########################################################
     timeout /t 5 >nul
     exit
